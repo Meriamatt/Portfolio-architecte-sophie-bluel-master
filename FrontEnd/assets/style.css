@@ -136,6 +136,27 @@ a:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+#portfolio a {
+	padding: 10px;
+	font-size: 1.2em;
+	text-decoration: none;
+	color: black;
+}
+#portfolioTitle{
+	margin-right: 25px;
+	margin-bottom: 0;
+}
+#projectEdit {
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+.fa-regular, .far {
+	font-weight: 400;
+	font-size: 1.5em;
+	margin: 10px;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;

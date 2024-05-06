@@ -27,8 +27,16 @@ submit.addEventListener("click",function(event) {
      
     })
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      .then((json) => {
+       if (json.error){
+        alert("Nom d'utilisateur ou mot de passe érroné");
+       }
+       else {
+        console.log(json);
+        window.localStorage.setItem("Token", json.token);
+        window.location.replace("logged.html");
+       }
+      });
 }
 )
 
-  
