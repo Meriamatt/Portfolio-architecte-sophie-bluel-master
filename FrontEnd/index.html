@@ -9,6 +9,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<script src="https://kit.fontawesome.com/370424bf79.js" crossorigin="anonymous"></script>
 	<script src="./assets/script.js" defer></script>
 </head>
 <body>
@@ -18,7 +19,8 @@
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li><a href="login.html">login</a></li>
+			<li><a href="login.html" id="login">login</a></li>
+			<li><a href="" id="logout">logout</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -36,7 +38,11 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div id="projectEdit">
+					<h2 id="portfolioTitle">Mes Projets</h2>
+					<i class="fa-regular fa-pen-to-square" id="modifyIcon"></i> 
+					<a href="" id="modify">modifier</a>
+				</div>
 		<div id="filterContainer">
 			<button id= "selected" class="filter active">Tout</button>
 		</div>

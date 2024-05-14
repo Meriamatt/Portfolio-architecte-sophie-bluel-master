@@ -34,7 +34,7 @@ submit.addEventListener("click",function(event) {
        else {
         console.log(json);
         window.localStorage.setItem("Token", json.token);
-        window.location.replace("logged.html");
+        window.location.replace("index.html");
        }
       });
 }

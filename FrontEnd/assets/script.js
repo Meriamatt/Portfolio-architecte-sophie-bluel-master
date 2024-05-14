@@ -38,10 +38,20 @@ function createButton(filterName){
 
  let filterSelected = document.getElementsByClassName ("filter");
   let filterActive = document.getElementsByClassName ("active");
+  let token = window.localStorage.getItem("Token");
+  let login = document.getElementById("login");
+  let logout = document.getElementById("logout"); 
+  let filterAll = document.getElementById("selected");
+  let modifyIcon = document.getElementById("modifyIcon");
+  let modifyButton = document.getElementById("modify");
 function addFilter(categories) {
 
- 
- for (let i = 0; i < categories.length; i++){
+  if (token){
+login.classList.add("display");
+filterAll.classList.add("display");
+  }
+  else {
+for (let i = 0; i < categories.length; i++){
 // instance of filterName with the value of categories name from the table categories
  createButton(categories[i].name);
  console.log(filterSelected);
@@ -54,12 +64,17 @@ function addFilter(categories) {
              let filteredCategorie = works.filter((works) => {
                  return works.category.name == categorieName;
              });
-             console.log(filteredCategorie);
              displayGallery(filteredCategorie);
 
              });
  }
-
+ logout.classList.add("display");
+ modifyButton.classList.add("display");
+ modifyIcon.classList.add("display");
+ 
+  }
+ 
+ 
   
 }
  let firstFilterSelected = document.getElementById ("selected");
@@ -86,3 +101,15 @@ function displayGallery(works) {
     div.append(figcaption);
   }
 }
+
+function clearLocalStorage() {
+        window.localStorage.removeItem("Token")
+        /*window.location.replace("index.html")*/
+    }
+
+logout.addEventListener("click", function(){
+window.localStorage.removeItem("Token")
+window.location.reload
+}
+
+);
