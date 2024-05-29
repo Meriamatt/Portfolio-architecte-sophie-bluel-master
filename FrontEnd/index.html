@@ -62,9 +62,7 @@
           <a href="#modal1" id="modify">modifier</a>
           <aside id="modal1" class="modal" aria-hidden="true" rol="dialog">
             <div class="modal-wrapper">
-              <a href="" id="closeModalIcon">
-                <i class="fa-solid fa-xmark"></i>
-              </a>
+                <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
               <h3>Galerie photo</h3>
               <div id="modal-gallery"></div>
               <div class="buttonContainer">
@@ -75,11 +73,12 @@
             </div>
           </aside>
           <aside id="modal2" class="modal" aria-hidden="true" rol="dialog">
-            <div class="modal-wrapper">
-              <a href="" id="closeSecondModalIcon">
-				<i class="fa-solid fa-arrow-left"></i>
-                <i class="fa-solid fa-xmark"></i>
-              </a>
+            <div  class="modal-wrapper">
+              <div id="iconsModal">
+				<i id="reopenFirstModal" class="fa-solid fa-arrow-left"></i>
+				<i id="closeSecondModalIcon" class="fa-solid fa-xmark"></i>
+			  </div>
+				
               <h3>Ajout photo</h3>
               <form>
                 <div id="labelPhoto">

@@ -518,7 +518,7 @@ footer nav ul {
   height: 200px;
   width: 180px;
 }
-#closeSecondModalIcon {
+#iconsModal {
   display: flex;
   justify-content: space-between;
 }

@@ -156,9 +156,10 @@ function modalGalery(works) {
 let modal = null;
 let modal2 = null;
 
-function openFirstModal(e) {
-  e.preventDefault();
-  const target = document.querySelector(e.target.getAttribute("href"));
+function openFirstModal() {
+  //e.preventDefault();
+  const target = document.getElementById("modal1");
+  console.log(target);
   target.style.display = "flex";
   if (isGalleryPlayed == false) {
     modalGalery(works);
@@ -189,6 +190,7 @@ function openSecondModal(e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = "flex";
+  
   modal2 = target;
   if (iscategorySelectPlayed == false) {
     for (var i = 0; i < categories.length; i++) {
@@ -201,6 +203,7 @@ function openSecondModal(e) {
     }
   }
   iscategorySelectPlayed = true;
+  closeModal(e);
 }
 
 document.getElementById("modify").addEventListener("click", openFirstModal);
@@ -270,6 +273,7 @@ document.getElementById("confirmSend").addEventListener("click", function () {
         console.log(works);
         res.json().then((json) => {
           works.push(json);
+          openFirstModal();
           clearmodalGalery();
           modalGalery(works);
         });
