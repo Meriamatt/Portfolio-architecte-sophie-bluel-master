@@ -1,5 +1,18 @@
 let works = [];
 let categories = [];
+function getWorks() {
+  fetch("http://localhost:5678/api/works")
+    .then((response) => response.json())
+    .then((json) => {
+      works = json;
+      clearGalery();
+      displayGallery(works);
+
+      console.log(works);
+    });
+}
+getWorks();
+
 const reponse = fetch("http://localhost:5678/api/works")
   .then((response) => response.json())
   .then((json) => {
@@ -17,6 +30,12 @@ const response = fetch("http://localhost:5678/api/categories")
 let gallery = document.querySelector(".gallery");
 function clearGalery() {
   gallery.innerHTML = "";
+}
+
+function clearmodalGalery() {
+  let modalGalleryPlayed = document.getElementById("modal-gallery");
+  modalGalleryPlayed.innerHTML = "";
+  console.log("gallery played")
 }
 
 //function to create button called filterName
@@ -105,6 +124,7 @@ let modalGalleryImage = document.getElementById("modal-gallery");
 console.log(modalGalleryImage);
 
 function modalGalery(works) {
+  console.log(works);
   for (let i = 0; i < works.length; i++) {
     let image = document.createElement("img");
     image.src = works[i].imageUrl;
@@ -184,7 +204,7 @@ function openSecondModal(e) {
 }
 
 document.getElementById("modify").addEventListener("click", openFirstModal);
-document.getElementById("closeModalIcon").addEventListener("click", closeModal);
+document.querySelector(".fa-xmark").addEventListener("click", closeModal);
 document
   .getElementById("closeSecondModalIcon")
   .addEventListener("click", closeSecondModal);
@@ -235,7 +255,6 @@ document.getElementById("confirmSend").addEventListener("click", function () {
     body: formData,
   })
     .then((res) => {
-      console.log(res);
       if (!res.ok) {
         return res.text().then((text) => {
           throw new Error(text);
@@ -243,12 +262,18 @@ document.getElementById("confirmSend").addEventListener("click", function () {
       } else {
         modal2.style.display = "none";
         modal2 = null;
-        document.getElementsByTagName('form')[0].reset();
-          imagePreview.style.display = "none";
-          browsePictures.style.display = "flex";
-          pictureIcone.style.display = "flex";
-          imageSize.style.display = "flex";
-
+        document.getElementsByTagName("form")[0].reset();
+        imagePreview.style.display = "none";
+        browsePictures.style.display = "flex";
+        pictureIcone.style.display = "flex";
+        imageSize.style.display = "flex";
+        console.log(works);
+        res.json().then((json) => {
+          works.push(json);
+          clearmodalGalery();
+          modalGalery(works);
+        });
+        console.log(works);
       }
     })
     .catch((err) => {
