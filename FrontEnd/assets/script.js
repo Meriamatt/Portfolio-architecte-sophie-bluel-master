@@ -35,7 +35,7 @@ function clearGalery() {
 function clearmodalGalery() {
   let modalGalleryPlayed = document.getElementById("modal-gallery");
   modalGalleryPlayed.innerHTML = "";
-  console.log("gallery played")
+  console.log("gallery played");
 }
 
 //function to create button called filterName
@@ -169,17 +169,20 @@ function openFirstModal() {
   modal
     .querySelector(".modal-wrapper")
     .addEventListener("click", stopPropagation);
+    document.removeEventListener("click", openFirstModal);
 }
 function closeModal(e) {
   e.preventDefault();
   modal.style.display = "none";
   modal = null;
+  document.removeEventListener("click", closeModal);
 }
 
 function closeSecondModal(e) {
   e.preventDefault();
   modal2.style.display = "none";
   modal2 = null;
+  document.removeEventListener("click", closeSecondModal);
 }
 function stopPropagation(e) {
   e.stopPropagation();
@@ -190,7 +193,7 @@ function openSecondModal(e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = "flex";
-  
+
   modal2 = target;
   if (iscategorySelectPlayed == false) {
     for (var i = 0; i < categories.length; i++) {
@@ -207,7 +210,8 @@ function openSecondModal(e) {
 }
 
 document.getElementById("modify").addEventListener("click", openFirstModal);
-document.querySelector(".fa-xmark").addEventListener("click", closeModal);
+document.getElementById("closeModalIcon").addEventListener("click", closeModal);
+
 document
   .getElementById("closeSecondModalIcon")
   .addEventListener("click", closeSecondModal);
@@ -219,6 +223,10 @@ imagePreview = document.getElementById("imagePreview");
 browsePictures = document.getElementById("browsePictures");
 pictureIcone = document.getElementById("pictureIcone");
 imageSize = document.getElementById("imageSize");
+
+document
+  .getElementById("reopenFirstModal")
+  .addEventListener("click", closeSecondModal);
 
 function previewFile() {
   var preview = imagePreview;
