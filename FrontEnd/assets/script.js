@@ -1,48 +1,45 @@
 let works = [];
 let categories = [];
+//get work from server
 function getWorks() {
   fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
     .then((json) => {
       works = json;
-      clearGalery();
+      clearGallery();
       displayGallery(works);
-
-      console.log(works);
     });
 }
 getWorks();
 
-const reponse = fetch("http://localhost:5678/api/works")
+/*fetch("http://localhost:5678/api/works")
   .then((response) => response.json())
   .then((json) => {
     works = json;
-    clearGalery();
+    clearGallery();
     displayGallery(works);
-  });
-const response = fetch("http://localhost:5678/api/categories")
+  });*/
+  // get category fro server
+fetch("http://localhost:5678/api/categories")
   .then((response) => response.json())
   .then((json) => {
     categories = json;
     addFilter(categories);
-    console.log(categories);
   });
 let gallery = document.querySelector(".gallery");
-function clearGalery() {
+function clearGallery() {
   gallery.innerHTML = "";
 }
 
-function clearmodalGalery() {
+function clearModalGallery() {
   let modalGalleryPlayed = document.getElementById("modal-gallery");
   modalGalleryPlayed.innerHTML = "";
-  console.log("gallery played");
 }
 
 //function to create button called filterName
 function createButton(filterName) {
   let filter = document.getElementById("filterContainer");
   let section = document.getElementById("portfolio");
-  console.log(filter);
   let button = document.createElement("button");
   button.innerText = filterName;
   button.className = "filter";
@@ -59,42 +56,43 @@ let logout = document.getElementById("logout");
 let filterAll = document.getElementById("selected");
 let modifyIcon = document.getElementById("modifyIcon");
 let modifyButton = document.getElementById("modify");
+
+// create filter for each category and handeling the click event 
 function addFilter(categories) {
   if (token) {
-    login.classList.add("display");
-    filterAll.classList.add("display");
+    login.classList.add("hidden");
+    filterAll.classList.add("hidden");
   } else {
     for (let i = 0; i < categories.length; i++) {
-      // instance of filterName with the value of categories name from the table categories
+      
       createButton(categories[i].name);
-      console.log(filterSelected);
       filterSelected[i + 1].addEventListener("click", function () {
-        console.log("click", categories[i].name);
-        let categorieName = categories[i].name;
+        let categoryName = categories[i].name;
         filterActive[0].classList.remove("active");
         filterSelected[i + 1].classList.add("active");
-        clearGalery();
-        let filteredCategorie = works.filter((works) => {
-          return works.category.name == categorieName;
+        clearGallery();
+        // filter work by category
+        let filteredCategory = works.filter((works) => {
+          return works.category.name == categoryName;
         });
-        displayGallery(filteredCategorie);
+        displayGallery(filteredCategory);
       });
     }
-    logout.classList.add("display");
-    modifyButton.classList.add("display");
-    modifyIcon.classList.add("display");
+    logout.classList.add("hidden");
+    modifyButton.classList.add("hidden");
+    modifyIcon.classList.add("hidden");
   }
 }
+// handelling the selection of filter All 
 let firstFilterSelected = document.getElementById("selected");
 firstFilterSelected.addEventListener("click", function () {
-  console.log("click", firstFilterSelected);
   filterActive[0].classList.remove("active");
   firstFilterSelected.classList.add("active");
-  console.log(filterActive);
-  clearGalery();
+  clearGallery();
   displayGallery(works);
 });
 
+//display work gotten from server
 function displayGallery(works) {
   for (let i = 0; i < works.length; i++) {
     let image = document.createElement("img");
@@ -111,7 +109,6 @@ function displayGallery(works) {
 
 function clearLocalStorage() {
   window.localStorage.removeItem("Token");
-  /*window.location.replace("index.html")*/
 }
 
 logout.addEventListener("click", function () {
@@ -121,10 +118,9 @@ logout.addEventListener("click", function () {
 
 let isGalleryPlayed = false;
 let modalGalleryImage = document.getElementById("modal-gallery");
-console.log(modalGalleryImage);
 
-function modalGalery(works) {
-  console.log(works);
+
+function modalGallery(works) {
   for (let i = 0; i < works.length; i++) {
     let image = document.createElement("img");
     image.src = works[i].imageUrl;
@@ -135,12 +131,10 @@ function modalGalery(works) {
     icon.classList.add("fa-trash-can");
     icon.classList.add("iconPosition");
     icon.addEventListener("click", function () {
-      console.log(imageId);
       div.remove();
       document.getElementById("image-" + imageId).remove();
-      console.log(works);
-      const element = document.getElementById("image-" + imageId);
-
+     
+     //delete work from server
       fetch("http://localhost:5678/api/works/" + imageId, {
         method: "DELETE",
         headers: { Authorization: "Bearer " + token },
@@ -156,20 +150,19 @@ function modalGalery(works) {
 let modal = null;
 let modal2 = null;
 
-function openFirstModal() {
-  //e.preventDefault();
+function openFirstModal(e) {
+  e.preventDefault();
   const target = document.getElementById("modal1");
-  console.log(target);
   target.style.display = "flex";
   if (isGalleryPlayed == false) {
-    modalGalery(works);
+    modalGallery(works);
   }
   modal = target;
   modal.addEventListener("click", closeModal);
   modal
     .querySelector(".modal-wrapper")
     .addEventListener("click", stopPropagation);
-    document.removeEventListener("click", openFirstModal);
+  document.removeEventListener("click", openFirstModal);
 }
 function closeModal(e) {
   e.preventDefault();
@@ -177,25 +170,49 @@ function closeModal(e) {
   modal = null;
   document.removeEventListener("click", closeModal);
 }
-
-function closeSecondModal(e) {
+//handel closing by the X that close both modals and the roll back that close just the second modal 
+function closeSecondModal(e, isCloseModal) {
   e.preventDefault();
   modal2.style.display = "none";
   modal2 = null;
   document.removeEventListener("click", closeSecondModal);
+  if (!isCloseModal) {
+    document.getElementById("modify").click();
+  }
+
 }
+// stop closing modal when click inside 
 function stopPropagation(e) {
   e.stopPropagation();
 }
-let iscategorySelectPlayed = false;
+
+
+let isCategorySelectPlayed = false;
 let categorySelect = document.getElementById("selectCategory");
+let inputTitle = document.getElementById('title');
+// make confirmation button disabled if one or more element are missed 
+function enableBtn() {
+  const title = document.getElementById("title").value;
+  const select = document.getElementById("selectCategory");
+  const categoryId = select.options[select.selectedIndex].value;
+  const image = document.querySelector("input[type=file]").files[0]
+  if (title != '' && categoryId != '' && image != undefined) {
+    document.getElementById('confirmSend').classList.remove('disabled-btn');
+    document.getElementById('confirmSend').removeAttribute('disabled');
+  }
+}
+//when there is a change in the form call the function enableBtn
+categorySelect.onchange = enableBtn;
+inputTitle.oninput = enableBtn;
+
+
 function openSecondModal(e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = "flex";
 
   modal2 = target;
-  if (iscategorySelectPlayed == false) {
+  if (isCategorySelectPlayed == false) {
     for (var i = 0; i < categories.length; i++) {
       let option = document.createElement("option");
       option.value = categories[i].id;
@@ -205,28 +222,32 @@ function openSecondModal(e) {
       categorySelect.appendChild(option);
     }
   }
-  iscategorySelectPlayed = true;
+  isCategorySelectPlayed = true;
   closeModal(e);
 }
 
 document.getElementById("modify").addEventListener("click", openFirstModal);
 document.getElementById("closeModalIcon").addEventListener("click", closeModal);
-
+//"true" define that the seconde modal is closed
 document
   .getElementById("closeSecondModalIcon")
-  .addEventListener("click", closeSecondModal);
+  .addEventListener("click", function (e) {
+    closeSecondModal(e, true)
+  });
 
 document
   .getElementById("addPictureButton")
   .addEventListener("click", openSecondModal);
 imagePreview = document.getElementById("imagePreview");
 browsePictures = document.getElementById("browsePictures");
-pictureIcone = document.getElementById("pictureIcone");
+pictureIcon = document.getElementById("pictureIcon");
 imageSize = document.getElementById("imageSize");
 
 document
   .getElementById("reopenFirstModal")
-  .addEventListener("click", closeSecondModal);
+  .addEventListener("click", function (e) {
+    closeSecondModal(e, false)
+  });
 
 function previewFile() {
   var preview = imagePreview;
@@ -242,11 +263,9 @@ function previewFile() {
   } else {
     preview.src = "";
   }
-  console.log(file);
-  console.log(preview);
   imagePreview.style.display = "flex";
   browsePictures.style.display = "none";
-  pictureIcone.style.display = "none";
+  pictureIcon.style.display = "none";
   imageSize.style.display = "none";
 }
 
@@ -254,41 +273,47 @@ document.getElementById("confirmSend").addEventListener("click", function () {
   const formData = new FormData();
   const title = document.getElementById("title").value;
   const select = document.getElementById("selectCategory");
-
-  const categoryName = select.options[select.selectedIndex].name;
+  const image = document.querySelector("input[type=file]").files[0];
   const categoryId = select.options[select.selectedIndex].value;
-  formData.append("image", document.querySelector("input[type=file]").files[0]);
-  formData.append("title", title);
-  formData.append("category", categoryId);
-  fetch("http://localhost:5678/api/works/", {
-    method: "POST",
-    headers: { Authorization: "Bearer " + token },
-    body: formData,
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return res.text().then((text) => {
-          throw new Error(text);
-        });
-      } else {
-        modal2.style.display = "none";
-        modal2 = null;
-        document.getElementsByTagName("form")[0].reset();
-        imagePreview.style.display = "none";
-        browsePictures.style.display = "flex";
-        pictureIcone.style.display = "flex";
-        imageSize.style.display = "flex";
-        console.log(works);
-        res.json().then((json) => {
-          works.push(json);
-          openFirstModal();
-          clearmodalGalery();
-          modalGalery(works);
-        });
-        console.log(works);
-      }
+  if (title != '' && categoryId != '' && image != undefined) {
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("category", categoryId);
+    fetch("http://localhost:5678/api/works/", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token },
+      body: formData,
     })
-    .catch((err) => {
-      console.log("caught it!", err);
-    });
+      .then((res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(text);
+          });
+        } else {
+          modal2.style.display = "none";
+          modal2 = null;
+          document.getElementsByTagName("form")[0].reset();
+          imagePreview.style.display = "none";
+          browsePictures.style.display = "flex";
+          pictureIcon.style.display = "flex";
+          imageSize.style.display = "flex";
+          res.json().then((json) => {
+            works.push(json);
+            document.getElementById("modify").click()
+            clearModalGallery();
+            modalGallery(works);
+            clearGallery();
+            displayGallery(works);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
+  } else {
+    alert('some inputs are empty');
+    document.getElementById('confirmSend').classList.add('disabled-btn');
+    document.getElementById('confirmSend').setAttribute('disabled', '');
+  }
+
 });
