@@ -429,6 +429,7 @@ footer nav ul {
   display: flex;
   justify-content: flex-end;
   font-size: 1.5em;
+  margin-right: 4px;
 }
 
 .modal-wrapper h3 {
@@ -449,6 +450,8 @@ footer nav ul {
   flex-wrap: wrap;
   margin: 40px;
   padding-left: 2em;
+  border-bottom: 1px solid;
+    border-bottom-color: #b3b3b3;
 }
 
 #modal-gallery img {
@@ -490,9 +493,9 @@ footer nav ul {
 
 .buttonContainer {
   text-align: center;
-  border-top: 1px solid;
+ /* border-top: 1px solid;
   border-top-color: #b3b3b3;
-  margin-inline: 5em;
+  margin-inline: 5em;*/
 }
 
 .divPosition {

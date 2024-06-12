@@ -121,6 +121,7 @@ let modalGalleryImage = document.getElementById("modal-gallery");
 
 
 function modalGallery(works) {
+  console.log(works);
   for (let i = 0; i < works.length; i++) {
     let image = document.createElement("img");
     image.src = works[i].imageUrl;
@@ -130,15 +131,23 @@ function modalGallery(works) {
     icon.classList.add("fa-solid");
     icon.classList.add("fa-trash-can");
     icon.classList.add("iconPosition");
+    //listeing the click on remove icon
     icon.addEventListener("click", function () {
       div.remove();
       document.getElementById("image-" + imageId).remove();
+      
+     
      
      //delete work from server
       fetch("http://localhost:5678/api/works/" + imageId, {
         method: "DELETE",
         headers: { Authorization: "Bearer " + token },
       });
+      getWorks();
+      console.log(works);
+
+      works = works.filter((works) => works.id !=  imageId);
+      console.log(works);
     });
     div.classList.add("divPosition");
     modalGalleryImage.appendChild(div);
@@ -223,6 +232,9 @@ function openSecondModal(e) {
     }
   }
   isCategorySelectPlayed = true;
+  document.getElementById('confirmSend').classList.add('disabled-btn');
+      document.getElementById('confirmSend').setAttribute('disabled', 'disabled');
+      //postWork();
   closeModal(e);
 }
 
@@ -275,6 +287,7 @@ document.getElementById("confirmSend").addEventListener("click", function () {
   const select = document.getElementById("selectCategory");
   const image = document.querySelector("input[type=file]").files[0];
   const categoryId = select.options[select.selectedIndex].value;
+  console.log(works);
   if (title != '' && categoryId != '' && image != undefined) {
     formData.append("image", image);
     formData.append("title", title);
@@ -298,10 +311,13 @@ document.getElementById("confirmSend").addEventListener("click", function () {
           pictureIcon.style.display = "flex";
           imageSize.style.display = "flex";
           res.json().then((json) => {
+            console.log(works);
             works.push(json);
+            console.log(works);
             document.getElementById("modify").click()
             clearModalGallery();
             modalGallery(works);
+
             clearGallery();
             displayGallery(works);
           });
@@ -317,3 +333,5 @@ document.getElementById("confirmSend").addEventListener("click", function () {
   }
 
 });
+
+
