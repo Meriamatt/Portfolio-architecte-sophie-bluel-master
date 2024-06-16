@@ -12,13 +12,6 @@ function getWorks() {
 }
 getWorks();
 
-/*fetch("http://localhost:5678/api/works")
-  .then((response) => response.json())
-  .then((json) => {
-    works = json;
-    clearGallery();
-    displayGallery(works);
-  });*/
   // get category fro server
 fetch("http://localhost:5678/api/categories")
   .then((response) => response.json())
@@ -26,6 +19,7 @@ fetch("http://localhost:5678/api/categories")
     categories = json;
     addFilter(categories);
   });
+  
 let gallery = document.querySelector(".gallery");
 function clearGallery() {
   gallery.innerHTML = "";
@@ -106,11 +100,11 @@ function displayGallery(works) {
     div.append(figcaption);
   }
 }
-
+//delete token from localstorage
 function clearLocalStorage() {
   window.localStorage.removeItem("Token");
 }
-
+//when click on logout 
 logout.addEventListener("click", function () {
   window.localStorage.removeItem("Token");
   window.location.reload();
@@ -143,10 +137,11 @@ function modalGallery(works) {
         method: "DELETE",
         headers: { Authorization: "Bearer " + token },
       });
+      //update the list of works 
       getWorks();
       console.log(works);
 
-      works = works.filter((works) => works.id !=  imageId);
+      //works = works.filter((works) => works.id !=  imageId);
       console.log(works);
     });
     div.classList.add("divPosition");
@@ -160,6 +155,7 @@ let modal = null;
 let modal2 = null;
 
 function openFirstModal(e) {
+  console.log(works);
   e.preventDefault();
   const target = document.getElementById("modal1");
   target.style.display = "flex";
@@ -234,6 +230,8 @@ function openSecondModal(e) {
   isCategorySelectPlayed = true;
   document.getElementById('confirmSend').classList.add('disabled-btn');
       document.getElementById('confirmSend').setAttribute('disabled', 'disabled');
+
+      
       //postWork();
   closeModal(e);
 }
