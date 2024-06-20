@@ -47,6 +47,8 @@ let filterActive = document.getElementsByClassName("active");
 let token = window.localStorage.getItem("Token");
 let login = document.getElementById("login");
 let logout = document.getElementById("logout");
+let editionMode = document.getElementById("edition-mode");
+let navBar = document.getElementById("nav-barre");
 let filterAll = document.getElementById("selected");
 let modifyIcon = document.getElementById("modifyIcon");
 let modifyButton = document.getElementById("modify");
@@ -56,6 +58,9 @@ function addFilter(categories) {
   if (token) {
     login.classList.add("hidden");
     filterAll.classList.add("hidden");
+    editionMode.classList.add("shown");
+    navBar.classList.add('navBarLogged');
+
   } else {
     for (let i = 0; i < categories.length; i++) {
       
@@ -195,6 +200,7 @@ function stopPropagation(e) {
 let isCategorySelectPlayed = false;
 let categorySelect = document.getElementById("selectCategory");
 let inputTitle = document.getElementById('title');
+
 // make confirmation button disabled if one or more element are missed 
 function enableBtn() {
   const title = document.getElementById("title").value;
